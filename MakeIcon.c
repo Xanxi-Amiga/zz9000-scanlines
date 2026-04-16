@@ -1,0 +1,163 @@
+/*
+ * MakeIcon - Creates ZZScanlinesGUI.info for ZZ9000 Scanlines GUI
+ * Run once on Amiga to generate the icon file.
+ *
+ * Build: m68k-amigaos-gcc -O2 -noixemul -o MakeIcon MakeIcon.c -lamiga
+ * Run:   MakeIcon  (creates ZZScanlinesGUI.info in current dir)
+ */
+
+#include <exec/types.h>
+#include <exec/memory.h>
+#include <workbench/workbench.h>
+#include <workbench/icon.h>
+#include <intuition/intuition.h>
+#include <proto/exec.h>
+#include <proto/icon.h>
+#include <stdio.h>
+
+#define ICON_W 32
+#define ICON_H 20
+#define ICON_D  2
+
+/* Normal image — blank screen */
+static UWORD normal_data[80] = {
+    /* plane 0 */
+    0x0000,0x0000,
+    0x7FFF,0xFFFE,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x7FFF,0xFFFE,
+    0x0007,0xFFE0,
+    0x001F,0xFFF8,
+    0x07FF,0xFFF8,
+    0x0000,0x0000,
+    0x0000,0x0000,
+    /* plane 1 */
+    0x0000,0x0000,
+    0x0000,0x0000,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x0000,0x0000,
+    0x0000,0x0000,
+    0x0000,0x0000,
+    0x0000,0x0000,
+    0x0000,0x0000,
+    0x0000,0x0000,
+};
+
+/* Selected image — screen with scanlines */
+static UWORD select_data[80] = {
+    /* plane 0 */
+    0x0000,0x0000,
+    0x7FFF,0xFFFE,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x7FFF,0xFFFE,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x7FFF,0xFFFE,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x7FFF,0xFFFE,
+    0x4000,0x0002,
+    0x4000,0x0002,
+    0x7FFF,0xFFFE,
+    0x7FFF,0xFFFE,
+    0x0007,0xFFE0,
+    0x001F,0xFFF8,
+    0x07FF,0xFFF8,
+    0x0000,0x0000,
+    0x0000,0x0000,
+    /* plane 1 */
+    0x0000,0x0000,
+    0x0000,0x0000,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x3FFF,0xFFFC,
+    0x0000,0x0000,
+    0x0000,0x0000,
+    0x0000,0x0000,
+    0x0000,0x0000,
+    0x0000,0x0000,
+    0x0000,0x0000,
+};
+
+static struct Image normal_img = {
+    0, 0,
+    ICON_W, ICON_H, ICON_D,
+    normal_data,
+    0x03, 0x00,
+    NULL
+};
+
+static struct Image select_img = {
+    0, 0,
+    ICON_W, ICON_H, ICON_D,
+    select_data,
+    0x03, 0x00,
+    NULL
+};
+
+static STRPTR tooltypes[] = { NULL };
+
+static struct DiskObject icon_do = {
+    WB_DISKMAGIC,
+    WB_DISKVERSION,
+    {
+        NULL,
+        0, 0,
+        ICON_W, ICON_H,
+        GADGHIMAGE | GADGIMAGE,
+        0,
+        BOOLGADGET,
+        (APTR)&normal_img,
+        (APTR)&select_img,
+        NULL,
+        0L, NULL, 0, NULL
+    },
+    WBTOOL,
+    NULL,
+    (STRPTR *)tooltypes,
+    NO_ICON_POSITION,
+    NO_ICON_POSITION,
+    NULL,
+    NULL,
+    4096
+};
+
+int main(void) {
+    if (PutDiskObject("ZZScanlinesGUI", &icon_do))
+        puts("OK: ZZScanlinesGUI.info created");
+    else
+        puts("ERROR: PutDiskObject failed");
+    return 0;
+}
