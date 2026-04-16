@@ -4,9 +4,9 @@
  * Usage: ZZScanlines <mode> [parity]
  *
  *   mode   : 0 = off
- *             1 = classic CRT 1/2 (every other line black)
- *             2 = phosphor 2/4 (two black lines every four)
- *             3 = gradient (normal/50%/black/50% repeat)
+ *             1 = classic 
+ *             2 = soft
+ *             3 = gradient 
  *   parity : 0 = odd lines dark (default)
  *             1 = even lines dark
  *
@@ -54,7 +54,7 @@ static ULONG find_zz9000(void) {
 int main(int argc, char *argv[]) {
     if (argc < 2 || argc > 3 || argv[1][0] == '?') {
         printf("Usage: %s <mode> [parity]\n", argv[0]);
-        printf("  mode   : 0=off  1=classic 1/2  2=phosphor 2/4  3=gradient\n");
+        pprintf("  mode   : 0=off  1=classic  2=soft  3=gradient\n");
         printf("  parity : 0=odd dark (default)  1=even dark\n");
         printf("  note   : active in AGA scandoubled modes and RTG below 350 lines\n");
         return 0;
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
     if (mode == 0) {
         printf("Scanlines OFF\n");
     } else {
-        const char *modes[] = {"", "classic 1/2", "phosphor 2/4", "gradient"};
+        const char *modes[] = {"", "classic", "soft", "gradient"};
         printf("Scanlines ON: mode=%d(%s) parity=%d\n", mode, modes[mode], parity);
     }
 
