@@ -54,7 +54,7 @@ static ULONG find_zz9000(void) {
 int main(int argc, char *argv[]) {
     if (argc < 2 || argc > 3 || argv[1][0] == '?') {
         printf("Usage: %s <mode> [parity]\n", argv[0]);
-        pprintf("  mode   : 0=off  1=classic  2=soft  3=gradient\n");
+        printf("  mode   : 0=off  1=classic  2=soft  3=gradient\n");
         printf("  parity : 0=odd dark (default)  1=even dark\n");
         printf("  note   : active in AGA scandoubled modes and RTG below 350 lines\n");
         return 0;
